@@ -57,6 +57,10 @@ export default new Router({
       path: '/rank',
       name: 'rank',
       component: Rank
+    },
+    {
+      path:'/user',
+      component:UserCenter
     }
   ]
 })
