@@ -26,7 +26,6 @@
 </template>
 <script>
   export default {
-    import SearchBox from 'base/search-box/search-box'
     methods:{
       deleteOne(){},
       selectItem(){},

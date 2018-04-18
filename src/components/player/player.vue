@@ -27,6 +27,11 @@
           </div>
         </div>
         <div class="bottom">
+          <div class="progress-wrapper">
+            <span class="time time-l">{{format(currentTime)}}</span>
+            <div class="progress-bar-wrapper"></div>
+            <span class="time time-r">{{format(currentSong.duration)}}</span>
+          </div>
           <div class="operators">
             <div class="icon i-left">
               <i class="icon-sequence"></i>
@@ -62,7 +67,7 @@
         </div>
       </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime"></audio>
   </div>
 </template>
 
@@ -75,35 +80,50 @@
   export default {
     data() {
       return {
-        songReady: false
+        songReady: false,
+        currentTime: ''
       }
     },
     methods: {
-      error(){
-        this.songReady=true
+      format(interval) {
+        interval = interval | 0
+        const second = interval % 60
+        const minute = interval / 60 | 0
+        return `${(minute+'').padStart(2,'0')}:${(second+'').padStart(2,'0')}`
+        // return `${minute}:${second}`
       },
-      ready(){
-        this.songReady=true
+      updateTime(e) {
+        this.currentTime = e.target.currentTime
+      },
+      error() {
+        this.songReady = true
+      },
+      ready() {
+        this.songReady = true
       },
       next() {
-        if(!this.songReady) return;
+        if (!this.songReady) return;
         let index = this.currentIndex + 1;
         if (index === this.playList.length) {
           index = 0
         }
         this.setCurrentIndex(index)
-        if (!this.playing) {this.togglePlaying()}
-        this.songReady=false
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false
       },
       prev() {
-        if(!this.songReady) return;
+        if (!this.songReady) return;
         let index = this.currentIndex - 1;
         if (index === -1) {
           index = this.playList.length
         }
         this.setCurrentIndex(index)
-        if (!this.playing){ this.togglePlaying()}
-        this.songReady=false
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false
       },
       togglePlaying() {
         this.setPlayingState(!this.playing)
@@ -169,8 +189,8 @@
       })
     },
     computed: {
-      disableCls(){
-        return this.songReady?'':'disable '
+      disableCls() {
+        return this.songReady ? '' : 'disable '
       },
       cdCls() {
         return this.playing ? 'play' : 'play pause'
