@@ -62,6 +62,28 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(error)
         })
       })
+      //歌词
+      app.get('/api/getLyric',(req,res)=>{
+        const url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
+        axios.get(url, {
+          headers: {
+            referer: 'https://y.qq.com/portal/player.html'
+          },
+          params: req.query
+        }).then(response => {
+          let ret=response.data
+          if(typeof ret ==='string'){
+            var reg=/^\w+\(({[^()]+})\)$/
+            var mathes=ret.match(reg)
+            if(mathes){
+              ret=JSON.parse(mathes[1])
+            }
+          }
+          res.json(ret)
+        }).catch(error => {
+          console.log(error)
+        })
+      })
     },
     //end
     clientLogLevel: 'warning',
