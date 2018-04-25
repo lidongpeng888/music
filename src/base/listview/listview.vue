@@ -66,8 +66,11 @@ export default {
     }
   },
   methods: {
+    refresh () {
+      this.$refs.listview.refresh()
+    },
     selectItem(item){
-      this.$emit('select',item) 
+      this.$emit('select',item)
     },
     onShortcutTouchStart(e) {
       let anchorIndex = getData(e.target, 'index')
@@ -142,7 +145,7 @@ export default {
       if(this.fixedTop===fixedTop)return;//正好在标题上不做变化减少dom操作频度
       this.fixedTop=fixedTop
       this.$refs.fixed.style.transform=`translate3d(0,${this.fixedTop}px,0)`
-    } 
+    }
   },
   components: {
     Scroll,Loading
