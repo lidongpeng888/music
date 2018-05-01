@@ -2,6 +2,9 @@
   <div class="song-list">
     <ul>
       <li @click="selectItem(song,index)" class="item" v-if="song" v-for=" (song,index)   in songs">
+        <div class="rank" v-if="rank">
+          <span :class="getRankClass(index)">{{getRankText(index)}}</span>
+        </div>
         <div class="content">
           <h2 class="name">{{song.name}}</h2>
           <p class="desc">{{getDesc(song)}}</p>
@@ -17,14 +20,29 @@
         songs:{
           type:Array,
           default:[]
+        },
+        rank:{
+          type:Boolean,
+          default:false
         }
       },
       methods:{
         getDesc(song){return `${song.singer} · ${song.album}`},
         selectItem(item,index){
           this.$emit('select',item,index)
+        },
+        getRankClass(index){
+          if(index<3){
+            return `icon icon${index}`
+          }
+          return 'text'
+        },
+        getRankText(index){
+          if(index>2){
+            return index+1
+          }
         }
-      }
+      },
     }
 </script>
 

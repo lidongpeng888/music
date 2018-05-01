@@ -7,13 +7,15 @@
 </template>
 
 <script>
-  import {debounce} from 'common/js/utils'
+  import {debounce} from 'common/js/util'
 
   export default {
     name: "search-box",
-    placeholder: {
-      type: String,
-      default: '搜索歌曲、歌手'
+    props:{
+      placeholder: {
+        type: String,
+        default: '搜索歌曲、歌手'
+      },
     },
     data() {
       return {
@@ -31,7 +33,7 @@
         this.$refs.query.blur()
       }
     },
-    cleated(){
+    created(){
       this.$watch('query',debounce((newValue)=>{
         this.$emit('query',newValue)
       },300))

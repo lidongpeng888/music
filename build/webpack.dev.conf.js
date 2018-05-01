@@ -84,6 +84,28 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(error)
         })
       })
+      //推荐 歌单
+      app.get('/api/getMusicDisc',(req,res)=>{
+        const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+        axios.get(url, {
+          headers: {
+            referer:  `https://y.qq.com/n/yqq/playsquare/${req.query.disstid}.html`
+          },
+          params: req.query
+        }).then(response => {
+          let ret=response.data
+          if(typeof ret ==='string'){
+            var reg=/^\w+\(({[^()]+})\)$/
+            var mathes=ret.match(reg)
+            if(mathes){
+              ret=JSON.parse(mathes[1])
+            }
+          }
+          res.json(ret)
+        }).catch(error => {
+          console.log(error)
+        })
+      })
     },
     //end
     clientLogLevel: 'warning',

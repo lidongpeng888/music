@@ -26,6 +26,16 @@ const SingerDetail =(resolve)=>{
     resolve(moudle)
   })
 }
+const Disc =(resolve)=>{
+  import('components/disc/disc').then((moudle)=>{
+    resolve(moudle)
+  })
+}
+const TopList =(resolve)=>{
+  import('components/top-list/top-list').then((moudle)=>{
+    resolve(moudle)
+  })
+}
 export default new Router({
   routes: [
     {
@@ -35,12 +45,21 @@ export default new Router({
     {
       path: '/recommend',
       name: 'recommend',
-      component: Recommend
+      component: Recommend,
+      children:[
+        {path:':id',component:Disc}
+      ]
     },
     {
       path: '/search',
       name: 'search',
-      component: Search
+      component: Search,
+      children:[
+        {
+          path: ':id',
+          component:SingerDetail
+        }
+      ]
     },
     {
       path: '/singer',
@@ -56,7 +75,10 @@ export default new Router({
     {
       path: '/rank',
       name: 'rank',
-      component: Rank
+      component: Rank,
+      children:[
+        {path:':id',component:TopList}
+      ]
     },
     {
       path:'/user',
